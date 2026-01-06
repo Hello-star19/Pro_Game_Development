@@ -102,7 +102,7 @@ class pipe(pygame.sprite.Sprite):
     def update(self):
         self.rect.x-= scroll_speed
         if self.rect.right<0:
-            self.kill
+            self.kill()
 # class for restart button 
 class restart():
     def __init__(self, x,y):
@@ -184,6 +184,7 @@ while run == True:
 
     pygame.display.update()
 pygame.quit()
+
 
 
 
