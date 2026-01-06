@@ -33,6 +33,16 @@ game_over = False
 background = pygame.image.load("bg.png")
 ground_image = pygame.image.load("ground.png")
 restart = pygame.image.load("restart.png")
+# Function for resetting the game
+def restarted():
+    global score
+    score = 0
+    pipes.empty()
+    bird_object.rect.x = 200
+    bird_object.rect.y = 390
+    return score
+
+
 # class for the bird 
 class bird(pygame.sprite.Sprite):
     def __init__(self, x,y):
@@ -77,7 +87,7 @@ class bird(pygame.sprite.Sprite):
                 self.image = self.images[self.index]
             self.image = pygame.transform.rotate(self.images[self.index], self.yspeed*-2)
         else:
-            self.image = pygame.transform.rotate(self.images[self.index,-90])
+            self.image = pygame.transform.rotate(self.images[self.index],-90)
 # class for the pipe
 class pipe(pygame.sprite.Sprite):
     def __init__(self, x,y, pos):
@@ -102,7 +112,12 @@ class restart():
     def draw(self):
         action = False
         mousepos = pygame.mouse.get_pos()
-        if self.rect.collidepoint(mousepos)
+        if self.rect.collidepoint(mousepos):
+            if pygame.mouse.get_pressed()[0]==1:
+                action = True 
+        bg.blit(self.image, (self.rect.x,self.rect.y))
+        return action 
+
 
 run = True
 # Group for the sprites
@@ -111,6 +126,8 @@ bird_object = bird(200,390)
 birds.add(bird_object)
 
 pipes = pygame.sprite.Group()
+button = restart(430,360)
+
 
 
 while run == True:
@@ -120,10 +137,30 @@ while run == True:
     bg.blit(ground_image, (ground_scroll,650))
     birds.draw(bg)  
     birds.update() 
+# Game score
+    if len(pipes) > 0:
+        bird_object = birds.sprites()[0]
+        fpipe = pipes.sprites()[0]
+        if bird_object.rect.left > fpipe.rect.left and bird_object.rect.right < fpipe.rect.right and not pipe_pass: 
+            pipe_pass = True
+        if pipe_pass and bird_object.rect.left > fpipe.rect.right:
+            score = score + 1
+            pipe_pass = False
+    score_screen = font.render(str(score), True, "Blue")
+    bg.blit(score_screen, (50,30))
+
+    # This is to chek collisions
+    if pygame.sprite.groupcollide(pipes,birds, False,False) or bird_object.rect.top < 0 or bird_object.rect.bottom > 768:
+        game_over = True 
+        bird_flight = False
 
     ground_scroll -= scroll_speed
     if abs(ground_scroll) >30 :
         ground_scroll = 0
+    if game_over == True:
+        if button.draw():
+            game_over = False
+            score = restarted()
     # pipe generation
     if bird_flight == True and game_over == False:
         # time in seconds game started
@@ -147,6 +184,19 @@ while run == True:
 
     pygame.display.update()
 pygame.quit()
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
