@@ -1,0 +1,51 @@
+from tkinter import *
+
+window = Tk()
+
+window.geometry("800x250")
+window.title("Weight Converter")
+window.configure(background="Blue")
+
+def convert():
+    kg = float(kg_input.get()) * 1000
+    pounds = float(kg_input.get()) * 2.2
+    ounces = float(kg_input.get()) * 35.27
+
+    gram_conversion.delete("1.0", END)
+    gram_conversion.insert(END, kg)
+
+    pound_conversion.delete("1.0", END)
+    pound_conversion.insert(END, pounds)
+
+    ounce_conversion.delete("1.0", END)
+    ounce_conversion.insert(END, ounces)
+
+
+kg_label = Label(window, text="Kilograms", bg="Yellow", fg="Black")
+kg_label.place(x=150, y=60)
+
+kg_input = Entry(window)
+kg_input.place(x=230, y=60)
+
+gram_label = Label(window, text="Grams", bg="Yellow", fg="Black")
+gram_label.place(x=150, y=100)
+
+pound_label = Label(window, text="Pounds", bg="Yellow", fg="Black")
+pound_label.place(x=150, y=140)
+
+ounce_label = Label(window, text="Ounces", bg="Yellow", fg="Black")
+ounce_label.place(x=150, y=180)
+
+conversion_button = Button(window, text="Convert", bg="Black", fg="White",
+                           bd=5, command=convert)
+conversion_button.place(x=390, y=60)
+
+gram_conversion = Text(window, height=2, width=15, fg="Blue")
+pound_conversion = Text(window, height=2, width=15, fg="Blue")
+ounce_conversion = Text(window, height=2, width=15, fg="Blue")
+
+gram_conversion.place(x=230, y=100)
+pound_conversion.place(x=230, y=140)
+ounce_conversion.place(x=230, y=180)
+
+window.mainloop()
