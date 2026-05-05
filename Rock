@@ -1,0 +1,133 @@
+from tkinter import *
+import random
+import tkinter.font as font 
+
+
+
+player_score = 0
+computer_score = 0
+Options = [("rock",0),("paper",1), ("scissors",2)]
+
+
+def computer_wins():
+    global player_score
+    global computer_score
+    computer_score = computer_score+1
+    winner_label.config(text=" computer won!")
+    computer_score_label.config(text=f"computer score: {computer_score}")
+    player_score_label.config(text=f"Player score: {player_score}")
+
+def player_wins():
+    global player_score
+    global computer_score
+    player_score = player_score+1
+    winner_label.config(text="You won!")
+    computer_score_label.config(text=f"you're score is :{computer_score}")
+    player_score_label.config(text=f"Player score: {player_score}")
+
+def tie():
+    global player_score
+    global computer_score
+    winner_label.config(text="Its a tie!")
+    computer_score_label.config(text=f"you're score is :{computer_score}")
+    player_score_label.config(text=f"Player score: {player_score}")
+
+def get_computer_choice():
+    return random.choice(Options)
+    
+
+def get_player_choice(player_input):
+    global player_score
+    global computer_score
+    print(player_input)
+    computer_input = get_computer_choice()
+    print(computer_input)
+    player_choice_label.config(text="You selected:" + player_input[0], fg= "Brown" )
+    computer_choice_label.config(text="The computer has selected:" + computer_input[0], fg= "Brown")
+
+    if player_input == computer_input:
+        tie()
+    if player_input[1] == 0: #Player selected rock
+        if computer_input[1]==1: # paper
+            computer_wins()
+
+        elif computer_input[1] ==2 :#scissors
+            player_wins()
+
+    elif player_input[1]==1: #paper
+        if computer_input[1]==0: # Rock
+            player_wins()
+
+        elif computer_input[1] ==2 :#scissors
+            computer_wins()
+    
+    elif player_input[1] == 2: #Player selected scissors
+        if computer_input[1]==0: #rock
+            computer_wins()
+
+        elif computer_input[1]==1: #paper
+            player_wins()
+        
+
+
+
+
+# Creating the GUI
+window = Tk()
+window.geometry("500x250")
+window.configure(background="Green")
+
+app_font= font.Font(size=14)
+game_title = Label(window, text= "Rock Paper Scissors", bg = "Green", fg= "Black", font=font.Font(size=20))
+game_title.pack()
+
+winner_label = Label(window, text=("Let's play the game"), bg= "Green", font=app_font)
+winner_label.pack()
+
+inputframe = Frame (window, bg=("White"))
+inputframe.pack()
+
+player_options = Label(inputframe, text="You're options are:", font = app_font,)
+player_options.grid(row=0, column=0, pady=7)
+
+rock_button = Button(inputframe, text="Rock", font=app_font, bd=7, bg="Light Blue", command = lambda: get_player_choice(Options[0]))
+rock_button.grid(row=1, column=1, pady=5)
+
+paper_button = Button(inputframe, text="Paper", font=app_font, bd=7, bg="Light Blue", command = lambda: get_player_choice(Options[1]))
+paper_button.grid(row=1, column=2, pady=5)
+
+Scissors_button = Button(inputframe, text="Scissors", font=app_font, bd=7, bg="Light Blue", command = lambda: get_player_choice(Options[2]))
+Scissors_button.grid(row=1, column=3, pady=5)
+
+# Score and Player Choice 
+score_label = Label(inputframe, text="score!", font=app_font, bg = "Light Blue")
+score_label.grid(row=2, column=0)
+
+player_choice_label = Label(inputframe, text= "You have selected:__", font=app_font,
+  bg = "Light Blue")
+player_choice_label.grid(row =3, column= 1, pady= 3)
+
+
+player_score_label = Label(inputframe, text= "You're score is:__", 
+ font= app_font, bg= "LightBlue" )
+player_score_label.grid(row =3, column= 3, pady= 3)
+
+
+computer_choice_label = Label(inputframe, text= "The computer has selected:__", font=app_font,
+  bg = "Light Blue")
+computer_choice_label.grid(row =4, column= 1, pady= 3)
+
+
+computer_score_label = Label(inputframe, text= "The computers score is:__", 
+ font= app_font, bg= "LightBlue" )
+computer_score_label.grid(row =4, column= 3, pady= 3)
+
+
+
+
+
+
+
+
+window.mainloop()
+
